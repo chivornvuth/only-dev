@@ -9,9 +9,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("🎧 Send me a YouTube video link and I'll convert it to MP3!")
 
 async def download_mp3(url: str, output_dir="downloads"):
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-
     ydl_opts = {
         'format': 'bestaudio/best',
         'outtmpl': f'{output_dir}/%(title)s.%(ext)s',
@@ -20,8 +17,7 @@ async def download_mp3(url: str, output_dir="downloads"):
             'preferredcodec': 'mp3',
             'preferredquality': '192',
         }],
-        'quiet': True,
-        'noplaylist': True,
+        'cookiefile': 'ytmp3_bot/cookies.txt',  # 👈 Add this line
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
